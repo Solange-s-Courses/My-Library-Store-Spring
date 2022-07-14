@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>Books</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" rel="stylesheet">
+
+
+    <style>
+
+        body {
+            background: #eecda3;
+            background: -webkit-linear-gradient(to right, #eecda3, #ef629f);
+            background: linear-gradient(to right, #eecda3, #ef629f);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+
+<div th:replace="../fragments/header :: logo_navbar"></div>
+<!-- For demo purpose -->
+<div class="container text-white py-5 text-center">
+    <h1 class="display-4">Shopping cart</h1>
+</div>
+
+<!-- End -->
+
+
+<div th:switch="${cart.size()}">
+    <h2 class="text-center mb-8" style="color:white" th:case="0">Your cart is empty, go add some products!</h2>
+
+    <div th:case="*">
+        <div class="col">
+            <div class="row">
+
+                <div class="col-md-2" th:each="c : ${cart}">
+                    <div class="card">
+                        <img class="card-img-top" height="100px" th:src="${c.image}" width="30px">
+                        <div class="card-body">
+                            <h5>Book Name: <span class="card-title" th:text="${c.name}"/></h5>
+                            <h3> Stock: <Span class="card-title" th:text="${c.quantity}"/></h3>
+                            <p>Price: <span class="card-text" th:text="${c.price - (c.price*(c.discount / 100))}"/></p>
+                            <a class="btn btn-primary" th:href="@{/addToCart/{id}(id=${c.id})}">Add to cart</a>
+                            <a class="btn btn-info" th:href="@{/delete/{id}(id=${c.id})}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" th:if="${message != null}">
+                    <div class="alert alert-info">
+                        <span th:text="${message}"/>
+                    </div>
+                </div>
+                <div class="col" th:if="${message != null}">
+                    <div class="alert alert-info">
+                        <span th:text="${message}"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mb-8">
+        <br/><br/>
+
+        <a class="btn btn-light" th:href="@{/emptyCard}" type="button">
+            Delete all basket <span class="badge badge-light" th:text="*{cartSize}"/>
+        </a>
+
+
+        <br/><br/>
+    </div>
+
+
+    <div class="row py-5 p-4 bg-white rounded shadow-sm">
+        <div class="col-lg-6">
+            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary</div>
+            <div class="p-4">
+                <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have
+                    entered.</p>
+                <ul class="list-unstyled mb-4">
+
+                    <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping
+                        and handling</strong><strong>$0.00</strong></li>
+                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                            class="text-muted">Tax</strong><strong>$0.00</strong></li>
+                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                            class="text-muted">Total</strong>
+                        <h5 class="font-weight-bold"><span th:text="${total_price}"/></h5>
+                    </li>
+
+
+                </ul>
+                <a class="btn btn-dark rounded-pill py-2 btn-block" th:href="@{/orderConfirmation}" type="button">
+                    Proceed to checkout <span class="badge badge-light"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>
